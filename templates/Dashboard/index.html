@@ -1,0 +1,175 @@
+{% extends 'partials/base.html' %}
+
+{% block content %}
+<style>
+    .card {
+        background-color: #16213e;
+        border: none;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        color: #e0e0e0;
+    }
+    .card-header {
+        background-color: #0f3460;
+        border-bottom: none;
+        color: #e94560;
+        font-weight: bold;
+    }
+    .stat-card {
+        text-align: center;
+        padding: 20px;
+    }
+    .stat-card i {
+        font-size: 3rem;
+        margin-bottom: 10px;
+        color: #e94560;
+    }
+    .stat-card .stat-value {
+        font-size: 2rem;
+        font-weight: bold;
+    }
+    .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+    }
+</style>
+
+<div class="row mb-4">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                Dashboard Statistics
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="fas fa-users"></i>
+                            <div class="stat-value">{{ staff_count }}</div>
+                            <div>Staff</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="fas fa-box"></i>
+                            <div class="stat-value">{{ product_count }}</div>
+                            <div>Products</div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="stat-card">
+                            <i class="fas fa-shopping-cart"></i>
+                            <div class="stat-value">{{ order_count }}</div>
+                            <div>Orders</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="pieChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <div class="chart-container">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const chartColors = ['#ff6b6b', '#4ecdc4', '#ffd93d', '#6ab04c', '#9b59b6', '#f39c12'];
+
+    // Pie Chart
+    var ctxPie = document.getElementById('pieChart').getContext('2d');
+    var pieChart = new Chart(ctxPie, {
+        type: 'pie',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                data: [30, 25, 15, 13, 7, 10],
+                backgroundColor: chartColors
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#e0e0e0',
+                        font: {
+                            size: 12
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Bar Chart
+    var ctxBar = document.getElementById('barChart').getContext('2d');
+    var barChart = new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: 'Products',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: chartColors
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: '#e0e0e0',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
+                    }
+                },
+                x: {
+                    ticks: {
+                        color: '#e0e0e0',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}
